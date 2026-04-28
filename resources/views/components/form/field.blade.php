@@ -6,6 +6,6 @@
         {{$attributes}}>
 
     @error($name)
-    <p class="error">{{ }}</p>
+    <p class="error">{{ $message}}</p>
     @enderror
 </div>

@@ -2,6 +2,7 @@
 
 use App\Models\Idea;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 test('it belongs to a user', function () {
     $idea = Idea::factory()->create();
@@ -19,4 +20,5 @@ test('it can have steps', function () {
     ]);
 
     expect($idea->fresh()->steps)->toHaveCount(1);
+
 });
