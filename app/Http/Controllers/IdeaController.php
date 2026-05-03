@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\idea;
+use App\Models\Idea as ModelsIdea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,18 +14,25 @@ class IdeaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $ideas = Auth::user()->ideas;
+        $ideas = Auth::user()
+            ->ideas()
+            ->when($request->status, fn ($query, $status) => $query->where('status', $status))
+            ->get();
+
+        // SELECT status, count(*) FROM ideas GROUP BY status;
+
         return view('idea.index', [
             'ideas' => $ideas,
+            'statusCounts' => ModelsIdea::statusCounts(Auth::user()),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -30,7 +40,7 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -38,7 +48,7 @@ class IdeaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(idea $idea)
+    public function show(idea $idea): void
     {
         //
     }
@@ -46,7 +56,7 @@ class IdeaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(idea $idea)
+    public function edit(idea $idea): void
     {
         //
     }
@@ -54,7 +64,7 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, idea $idea)
+    public function update(Request $request, idea $idea): void
     {
         //
     }
@@ -62,7 +72,7 @@ class IdeaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(idea $idea)
+    public function destroy(idea $idea): void
     {
         //
     }
