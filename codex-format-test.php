@@ -1,3 +1,9 @@
 <?php
 
-class CodexFormatTest { public function handle( ) { return true; } }
+class CodexFormatTest
+{
+    public function handle()
+    {
+        return true;
+    }
+}
