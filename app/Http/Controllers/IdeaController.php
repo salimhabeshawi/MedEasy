@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\IdeaStatus;
-use App\Models\idea;
-use App\Models\Idea as ModelsIdea;
+use App\Models\Idea;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +19,11 @@ class IdeaController extends Controller
     {
         $user = Auth::user();
 
+        if (! $user instanceof User) {
+            abort(403);
+        }
+
+        /** @var User $user */
         $status = $request->status;
 
         if (! in_array($status, IdeaStatus::values())) {
@@ -34,7 +39,7 @@ class IdeaController extends Controller
 
         return view('idea.index', [
             'ideas' => $ideas,
-            'statusCounts' => ModelsIdea::statusCounts(Auth::user()),
+            'statusCounts' => Idea::statusCounts(Auth::user()),
         ]);
     }
 
@@ -57,15 +62,17 @@ class IdeaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(idea $idea): void
+    public function show(Idea $idea)
     {
-        //
+        return view('idea.show', [
+            'idea' => $idea,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(idea $idea): void
+    public function edit(Idea $idea): void
     {
         //
     }
@@ -73,7 +80,7 @@ class IdeaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, idea $idea): void
+    public function update(Request $request, Idea $idea): void
     {
         //
     }
@@ -81,8 +88,10 @@ class IdeaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(idea $idea): void
+    public function destroy(Idea $idea)
     {
-        //
+        $idea->delete();
+
+        return to_route('idea.index');
     }
 }

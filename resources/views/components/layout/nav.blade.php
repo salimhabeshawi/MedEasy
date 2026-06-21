@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto h-16 flex items-center justify-between">
         <div class="h-10">
             <a href="/" class="flex h-full items-center">
-                <img src="images/salim_logo.svg" alt="Salim logo" class="h-full w-auto max-w-40 object-contain">
+                <img src="{{ asset('images/salim_logo.svg') }}" alt="Salim logo" class="h-full w-auto max-w-40 object-contain">
             </a>
         </div>
 
