@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreIdeaRequest;
 use App\IdeaStatus;
 use App\Models\Idea;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,20 +19,10 @@ class IdeaController extends Controller
     {
         $user = Auth::user();
 
-        if (! $user instanceof User) {
-            abort(403);
-        }
-
-        /** @var User $user */
-        $status = $request->status;
-
-        if (! in_array($status, IdeaStatus::values())) {
-            $status = null;
-        }
-
         $ideas = $user
             ->ideas()
-            ->when($status, fn ($query, $status) => $query->where('status', $status))
+            ->when(in_array($request->status, IdeaStatus::values()), fn ($query) => $query->where('status', $status))
+            ->latest()
             ->get();
 
         // SELECT status, count(*) FROM ideas GROUP BY status;
@@ -54,9 +44,12 @@ class IdeaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(StoreIdeaRequest $request)
     {
-        //
+        Auth::user()->ideas()->create($request->validated());
+
+        return to_route('idea.index')
+            ->with('succuss', 'Idea Created');
     }
 
     /**
