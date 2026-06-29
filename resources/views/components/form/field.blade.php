@@ -6,9 +6,7 @@
     @endif
 
     @if ($type === 'textarea')
-        <textarea name="{{ $name }}" id="{{ $name }}" class="textarea" {{ $attributes }}>
-            {{ old($name) }}
-        </textarea>
+        <textarea name="{{ $name }}" id="{{ $name }}" class="textarea" {{ $attributes }}>{{ old($name) }}</textarea>
     @else
         <input type="{{ $type }}" class="input" id="{{ $name }}" name="{{ $name }}"
             value="{{ old($name) }}" {{ $attributes }}>

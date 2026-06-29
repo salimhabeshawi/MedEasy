@@ -18,6 +18,12 @@ class Idea extends Model
     /** @use HasFactory<IdeaFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'status',
+    ];
+
     protected $casts = [
         'links' => AsArrayObject::class,
         'status' => IdeaStatus::class,
@@ -35,7 +41,7 @@ class Idea extends Model
             ->pluck('count', 'status');
 
         return collect(IdeaStatus::cases())
-            ->mapWithKeys(fn (IdeaStatus $status) => [
+            ->mapWithKeys(fn(IdeaStatus $status) => [
                 $status->value => $counts->get($status->value, 0),
             ])
             ->put('all', $user->ideas()->count());
