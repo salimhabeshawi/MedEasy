@@ -21,14 +21,23 @@
         </div>
 
         <div class="mt-8 space-y-6">
+            @if($idea->image_path)
+                <div class="rounded-lg overflow-hidden">
+                    <img
+                        src="{{asset('storage/' . $idea->image_path)}}"
+                        alt="{{$idea->title}}"
+                        class="w-full h-auto rounded-lg object-cover"
+                    >
+                </div>
+            @endif
             <h1 class="font-bold text-4xl">{{ $idea->title }}</h1>
 
             <div class="mt-2 flex gap-x-3 items-center">
-                <x-idea.status-lable :status="$idea->status->value">{{ $idea->status->label() }}</x-idea>
+                <x-idea.status-lable :status="$idea->status->value">{{ $idea->status->label() }}</x-idea.status-lable>
 
-                    <div class="text-muted-foreground text-sm">
-                        {{ $idea->created_at->diffForHumans() }}
-                    </div>
+                <div class="text-muted-foreground text-sm">
+                    {{ $idea->created_at->diffForHumans() }}
+                </div>
 
             </div>
 
@@ -67,17 +76,17 @@
                 <div>
                     <h3 class=" font-bold text-xl mt-6">Links</h3>
 
-                                        <div class="mt-3 space-y-2">
-                                            @foreach ($idea->links as $link)
-                                                <x-card :href="$link"
-                                                        class="text-primary font-medium flex gap-x-3 items-center">
-                                                    <x-icons.external/>
-                                                    {{ $link }}
-                                                </x-card>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                            @endif
+                    <div class="mt-3 space-y-2">
+                        @foreach ($idea->links as $link)
+                            <x-card :href="$link"
+                                    class="text-primary font-medium flex gap-x-3 items-center">
+                                <x-icons.external/>
+                                {{ $link }}
+                            </x-card>
+                        @endforeach
                     </div>
                 </div>
+            @endif
+        </div>
+    </div>
 </x-layout>

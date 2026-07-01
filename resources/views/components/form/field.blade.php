@@ -12,6 +12,6 @@
             value="{{ old($name) }}" {{ $attributes }}>
     @endif
 
-    <x-form.error name="status" />
+    <x-form.error :name="$name" />
 
 </div>

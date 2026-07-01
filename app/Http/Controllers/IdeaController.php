@@ -43,13 +43,19 @@ class IdeaController extends Controller
     public function store(StoreIdeaRequest $request)
     {
 
-//        dd($request->all());
+        //        dd($request->all());
 
-        $idea = Auth::user()->ideas()->create($request->safe()->except('steps'));
+        $idea = Auth::user()->ideas()->create($request->safe()->except('steps', 'image'));
 
         $idea->steps()->createMany(
             collect($request->steps)->map(fn($step) => ['description' => $step])
         );
+
+        $imagePath = $request->image->store('ideas', 'public');
+
+        $idea->update([
+            'image_path' => $imagePath
+        ]);
 
         return to_route('idea.index')
             ->with('success', 'Idea Created');
@@ -59,6 +65,14 @@ class IdeaController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(): void
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Idea $idea): void
     {
         //
     }
@@ -77,14 +91,6 @@ class IdeaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Idea $idea): void
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Idea $idea): void
     {
         //
     }
