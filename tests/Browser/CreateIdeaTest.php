@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
+
 it('creates a new idea', function () {
-    $this->actingAs($user = \App\Models\User::factory()->create());
+    $this->actingAs($user = User::factory()->create());
 
     visit('/ideas')
         ->click('@create-idea-button')

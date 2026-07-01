@@ -63,11 +63,12 @@
                     newLink: '',
                     links: [],
                     newStep: '',
-                    steps: []
+                    steps: [],
+                    imageSelected: false
                 }"
                 method="POST"
                 action="{{ route('idea.store') }}"
-                enctype="multipart/form-data"
+                :enctype="imageSelected ? 'multipart/form-data' : 'application/x-www-form-urlencoded'"
             >
                 @csrf
 
@@ -106,6 +107,7 @@
                             type="file"
                             name="image"
                             accept="image/*"
+                            @change="imageSelected = $event.target.files.length > 0"
                             class="file:text-black"
                         />
                         <x-form.error name="image"/>
